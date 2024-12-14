@@ -9,13 +9,22 @@ const RealmContext = createContext<{ realm: Realm | null }>({ realm: null });
 const RealmConfig: Realm.Configuration = {
   schema: [Employee, Payment, Attendance],
   schemaVersion: 4,
-  migration: (oldRealm, newRealm) => {
+  onMigration: (oldRealm, newRealm) => {
+    // Only migrate if schema version is less than current
     if (oldRealm.schemaVersion < 4) {
-      const oldObjects = oldRealm.objects('Employee');
-      const newObjects = newRealm.objects('Employee');
+      const oldEmployees = oldRealm.objects('Employee');
+      const newEmployees = newRealm.objects('Employee');
 
-      for (let i = 0; i < oldObjects.length; i++) {
-        newObjects[i] = oldObjects[i];
+      // Copy old data to new schema
+      for (let i = 0; i < oldEmployees.length; i++) {
+        const oldEmployee = oldEmployees[i];
+        newEmployees[i] = {
+          _id: oldEmployee._id,
+          name: oldEmployee.name,
+          phone: oldEmployee.phone,
+          dailyWage: oldEmployee.dailyWage,
+          createdAt: oldEmployee.createdAt,
+        };
       }
     }
   },
@@ -29,11 +38,10 @@ export function RealmProvider({ children }: { children: React.ReactNode }) {
 
     const openRealm = async () => {
       try {
-        // Delete the realm file to start fresh with new schema
-        await Realm.deleteFile(RealmConfig);
-        
+        console.log('Opening Realm database...');
         const realmInstance = await Realm.open(RealmConfig);
         if (isActive) {
+          console.log('Realm opened successfully');
           setRealm(realmInstance);
         }
       } catch (error) {
@@ -46,6 +54,7 @@ export function RealmProvider({ children }: { children: React.ReactNode }) {
     return () => {
       isActive = false;
       if (realm && !realm.isClosed) {
+        console.log('Closing Realm database...');
         realm.close();
       }
     };
