@@ -6,6 +6,11 @@ import { useEffect } from 'react';
 import { RealmProvider } from '@/context/RealmContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ThemeProvider as AppThemeProvider } from '@/contexts/ThemeContext';
+import Realm from 'realm';
+import 'react-native-get-random-values';
+
+// Configure Realm
+Realm.flags.THROW_ON_GLOBAL_REALM = true;
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,11 +34,20 @@ export default function RootLayout() {
     <RealmProvider>
       <AppThemeProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
+          <RootLayoutNav />
         </ThemeProvider>
       </AppThemeProvider>
     </RealmProvider>
+  );
+}
+
+function RootLayoutNav() {
+  return (
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="employee/[id]" options={{ presentation: 'card' }} />
+      </Stack>
+    </>
   );
 }

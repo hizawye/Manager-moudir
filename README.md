@@ -1,34 +1,20 @@
 # Manager Moudir
 
-A React Native mobile application built with Expo for managing employees and their daily wages. Designed for business owners and managers to efficiently track workforce attendance, wages, and performance.
+A React Native mobile application built with Expo for managing employees and their daily wages. Designed for business owners and managers to efficiently track workforce and wages.
 
 ## Features
 
-- 📱 **Employee Management**
+- **Employee Management**
   - Add, edit, and archive employees
-  - Track attendance and work hours
   - Store personal and contact information
   - Manage salary rates and payment history
 
-- 💰 **Wage Tracking**
-  - Calculate daily and monthly wages
-  - Track overtime and bonuses
-  - Generate payment reports
-  - Export financial summaries
+- **Wage Tracking**
+  - Calculate daily wages
+  - Track payments
+  - View payment history
 
-- 📊 **Analytics & Reports**
-  - View attendance patterns
-  - Analyze wage distributions
-  - Track performance metrics
-  - Generate monthly reports
-
-- 🔄 **Sync & Backup**
-  - Offline-first with Realm database
-  - Automatic data synchronization
-  - Secure cloud backups
-  - Multi-device support
-
-- 🎨 **User Experience**
+- **User Experience**
   - Intuitive interface
   - Dark/Light theme support
   - Multi-language support
@@ -49,7 +35,6 @@ A React Native mobile application built with Expo for managing employees and the
 ```bash
 git clone [your-repository-url]
 cd manager-moudir
-
 ```
 
 2. Install dependencies:
@@ -78,8 +63,7 @@ npx expo start
 /
 ├── app/                    # Main application code
 │   ├── (tabs)/            # Tab-based screens
-│   │   ├── index.tsx      # Home screen
-│   │   ├── employees.tsx  # Employee management
+│   │   ├── index.tsx      # Home screen (Employees)
 │   │   └── settings.tsx   # App settings
 │   ├── modals/            # Modal screens
 │   ├── _layout.tsx        # Root layout configuration
@@ -99,11 +83,10 @@ npx expo start
 ### Key Technologies
 
 - **Expo**: Framework and platform for React Native
-- **React Navigation**: Tab and stack navigation
+- **React Navigation**: Navigation library
 - **Realm**: Local database for offline-first functionality
-- **TypeScript**: Type-safe development
-- **Expo Router**: File-based routing system
-- **React Native Paper**: UI component library
+- **TypeScript**: Type-safe JavaScript
+- **date-fns**: Date utility library
 
 ### Development Workflow
 
@@ -204,6 +187,10 @@ eas build --platform android
 4. Push to the branch
 5. Create a Pull Request
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ## Support
 
 For support:
@@ -215,7 +202,3 @@ For support:
    - Actual behavior
    - Screenshots/logs
 4. Contact the maintainers
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

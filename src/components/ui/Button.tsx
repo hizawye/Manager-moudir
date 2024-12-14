@@ -1,36 +1,31 @@
-import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
-import { ThemedText } from '../../components/ThemedText';
-import { IconSymbol } from '../../../components/ui/IconSymbol';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 import { Colors } from '../../constants/Colors';
 
 interface ButtonProps extends TouchableOpacityProps {
-  children: string;
-  icon?: string;
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary';
+  style?: ViewStyle;
 }
 
-export function Button({ children, style, icon, ...props }: ButtonProps) {
+export function Button({ children, style, variant = 'primary', ...props }: ButtonProps) {
   return (
     <TouchableOpacity 
-      style={[styles.button, style]} 
+      style={[
+        styles.button,
+        variant === 'primary' ? styles.primaryButton : styles.secondaryButton,
+        style,
+      ]} 
       activeOpacity={0.8}
       {...props}
     >
-      {icon && (
-        <IconSymbol 
-          name="person.badge.plus" 
-          size={20} 
-          color="#FFFFFF" 
-          style={styles.icon}
-        />
-      )}
-      <ThemedText style={styles.text}>{children}</ThemedText>
+      {children}
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: Colors.light.tint,
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -38,12 +33,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
+  primaryButton: {
+    backgroundColor: Colors.light.primary,
   },
-  icon: {
-    marginRight: 8,
+  secondaryButton: {
+    backgroundColor: 'rgba(0,0,0,0.05)',
   },
-}); 
+});

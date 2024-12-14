@@ -15,6 +15,10 @@ const MAPPING = {
   'chevron.right': 'chevron-right',
   'person.badge.plus': 'person-add',
   'person.2.fill': 'people',
+  'gear': 'settings',
+  'calendar': 'calendar-today',
+  'square.and.arrow.down': 'file-download',
+  'chart.bar.fill': 'bar-chart',
 } as const;
 
 export type IconSymbolName = keyof typeof MAPPING;

@@ -8,7 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 interface AddEmployeeModalProps {
   visible: boolean;
   onClose: () => void;
-  onSubmit: (employee: { name: string; phone: string; dailyWage: string }) => void;
+  onSubmit: (employee: { name: string; phone: string; dailyWage: number }) => void;
 }
 
 export function AddEmployeeModal({ visible, onClose, onSubmit }: AddEmployeeModalProps) {
@@ -18,11 +18,28 @@ export function AddEmployeeModal({ visible, onClose, onSubmit }: AddEmployeeModa
   const [dailyWage, setDailyWage] = useState('');
 
   const handleSubmit = () => {
-    onSubmit({ name, phone, dailyWage });
+    // Convert dailyWage to integer and validate
+    const wageValue = Math.floor(Number(dailyWage));
+    if (isNaN(wageValue) || wageValue <= 0) {
+      alert('Please enter a valid daily wage');
+      return;
+    }
+
+    onSubmit({ 
+      name, 
+      phone, 
+      dailyWage: wageValue
+    });
     setName('');
     setPhone('');
     setDailyWage('');
     onClose();
+  };
+
+  const handleWageChange = (text: string) => {
+    // Only allow numbers
+    const numericValue = text.replace(/[^0-9]/g, '');
+    setDailyWage(numericValue);
   };
 
   return (
@@ -82,8 +99,8 @@ export function AddEmployeeModal({ visible, onClose, onSubmit }: AddEmployeeModa
             placeholder="Daily Wage (DZD)"
             placeholderTextColor={isDarkMode ? Colors.dark.border : Colors.light.border}
             value={dailyWage}
-            onChangeText={setDailyWage}
-            keyboardType="numeric"
+            onChangeText={handleWageChange}
+            keyboardType="number-pad"
           />
 
           <View style={styles.buttonContainer}>
@@ -94,16 +111,14 @@ export function AddEmployeeModal({ visible, onClose, onSubmit }: AddEmployeeModa
                 { backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.cardBackground }
               ]}
             >
-              Cancel
+              <ThemedText>Cancel</ThemedText>
             </Button>
             <Button 
               onPress={handleSubmit}
-              style={[
-                styles.submitButton,
-                { backgroundColor: isDarkMode ? Colors.dark.tint : Colors.light.tint }
-              ]}
+              style={styles.submitButton}
+              variant="primary"
             >
-              Add Employee
+              <ThemedText style={{ color: '#fff' }}>Add Employee</ThemedText>
             </Button>
           </View>
         </View>
@@ -121,30 +136,41 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '90%',
-    borderRadius: 12,
     padding: 20,
-    gap: 16,
+    borderRadius: 12,
     borderWidth: 1,
   },
   modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 20,
     textAlign: 'center',
-    marginBottom: 8,
   },
   input: {
+    height: 44,
     borderWidth: 1,
     borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
+    paddingHorizontal: 12,
+    marginBottom: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 12,
     marginTop: 8,
   },
   cancelButton: {
     flex: 1,
+    height: 44,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   submitButton: {
     flex: 1,
+    height: 44,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-}); 
+});
